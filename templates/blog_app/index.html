@@ -1,0 +1,23 @@
+{% extends 'core/core.html' %}
+
+{% block title %}Index Page{% endblock title %}
+
+{% block content %}
+    {% if not news %}
+        <h3>No News to display</h3>
+    {% else %}
+        {% for info in news %}
+            <h2>{{info.title}}</h2>
+            <p>{{info.description}}</p>
+            <span class="pb-3">{{info.date_posted}}</span>
+            <small>By {{info.user.username}}</small>
+            {% if user.is_superuser or user.id == info.user.id %}
+                <a href="{% url 'edit' id=info.id %}" class="btn btn-secondary">Edit</a>
+                <a href="{% url 'delete' id=info.id %}" class="btn btn-danger">Delete</a>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div>
+        <a href="{% url 'add' %}" class="btn-primary btn my-3">Add News</a>
+    </div>
+{% endblock content %}
